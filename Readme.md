@@ -4,7 +4,11 @@ I configure and add auth v1 for influxdb v2 for compatibility influxdb v1 and cr
 ```
 https://github.com/robbyq92/ansible-role-influxdb/blob/master/tasks/configure.yml
 ```
+I try to configure when, for detect S.O and install repositori for Centos/RedHat and Debian/Ubuntu, if any can try to fix this is better.
 
+```
+https://github.com/robbyq92/ansible-role-influxdb/blob/master/tasks/setup.yml
+```
 
 [![tests](https://github.com/boutetnico/ansible-role-influxdb/workflows/Test%20ansible%20role/badge.svg)](https://github.com/boutetnico/ansible-role-influxdb/actions?query=workflow%3A%22Test+ansible+role%22)
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-boutetnico.influxdb-blue.svg)](https://galaxy.ansible.com/boutetnico/influxdb)
