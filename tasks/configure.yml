@@ -23,6 +23,7 @@
     - '"has already been set up" not in _setup.stderr'
   changed_when: _setup.rc == 0
 
+
 - name: Ensure organizations exist
   command: influx org create \
     --host "{{ influxdb_host }}" \
@@ -67,3 +68,340 @@
     - _bucket.rc != 0
     - '"already exists" not in _bucket.stderr'
   changed_when: _bucket.rc == 0
+
+
+
+##Configuración echa para el Mapeo de Influx V1##
+
+##We created a mapped influxdb v1##
+
+
+
+
+- name: Sacar ID Bucket Wintel
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i wintel | awk '{print $1}'
+  register: m360_wintel
+
+
+- name: Crear DBs para InfluxQL V1 M360_Wintel
+  command: influx v1 dbrp create \
+    --db m360_wintel \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ m360_wintel.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Unix
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i unix | awk '{print $1}'
+  register: unix
+
+
+- name: Crear DBs para InfluxQL V1 Unix
+  command: influx v1 dbrp create \
+    --db unix \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ unix.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Core
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i core | awk '{print $1}'
+  register: core
+
+
+- name: Crear DBs para InfluxQL V1 Core
+  shell: influx v1 dbrp create \
+    --db core \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ core.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+
+- name: Sacar ID Bucket Bouts
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i bouts | awk '{print $1}'
+  register: bouts
+
+
+- name: Crear DBs para InfluxQL V1 Bouts
+  shell: influx v1 dbrp create \
+    --db bouts \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ bouts.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Influxdb
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i influxdb | awk '{print $1}'
+  register: influxdb
+
+
+- name: Crear DBs para InfluxQL V1 influxdb
+  shell: influx v1 dbrp create \
+    --db influxdb \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ influxdb.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+
+- name: Sacar ID Bucket Mysql
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i mysql | awk '{print $1}'
+  register: mysql
+
+
+- name: Crear DBs para InfluxQL V1 M360_Mysql
+  shell: influx v1 dbrp create \
+    --db mmysql \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ mysql.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket SQLServer
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i qlserver | awk '{print $1}'
+  register: sqlserver
+
+
+- name: Crear DBs para InfluxQL V1 MysqlServer
+  shell: influx v1 dbrp create \
+    --db sqlserver \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ sqlserver.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+
+- name: Sacar ID Bucket ElasticSearch
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i elasticsearch | awk '{print $1}'
+  register: elasticsearch
+
+
+- name: Crear DBs para InfluxQL V1 Elasticsearch
+  shell: influx v1 dbrp create \
+    --db elasticsearch \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ elasticsearch.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Apps_Endpoints
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i apps_endpoints | awk '{print $1}'
+  register: apps_endpoints
+
+
+- name: Crear DBs para InfluxQL V1 Apps_Endpoints
+  shell: influx v1 dbrp create \
+    --db mapps_endpoints \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ apps_endpoints.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Kapacitor
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i kapacitor | awk '{print $1}'
+  register: kapacitor
+
+
+- name: Crear DBs para InfluxQL V1 Kapacitor
+  shell: influx v1 dbrp create \
+    --db kapacitor \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ kapacitor.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Jolokia
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i jolokia | awk '{print $1}'
+  register: jolokia
+
+
+- name: Crear DBs para InfluxQL V1 Jolokia
+  shell: influx v1 dbrp create \
+    --db jolokia \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ jolokia.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Networking
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i networking | awk '{print $1}'
+  register: networking
+
+
+- name: Crear DBs para InfluxQL V1 Networking
+  shell: influx v1 dbrp create \
+    --db networking \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ networking.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Alerts
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i alerts | awk '{print $1}'
+  register: alerts
+
+
+- name: Crear DBs para InfluxQL V1 Alerts
+  shell: influx v1 dbrp create \
+    --db alerts \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ alerts.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Endpoints
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i endpoints | awk '{print $1}'
+  register: endpoints
+
+
+- name: Crear DBs para InfluxQL V1 Endpoints
+  shell: influx v1 dbrp create \
+    --db endpoints \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ endpoints.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+- name: Sacar ID Bucket Kafka
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i kafka | awk '{print $1}'
+  register: kafka
+
+
+- name: Crear DBs para InfluxQL V1 kafka
+  shell: influx v1 dbrp create \
+    --db kafka \
+    --rp autogen \
+    --default \
+    --bucket-id "{{ kafka.stdout }}" \
+    -t  {{ influxdb_admin_token }}
+
+
+
+
+##insertamos buckets para dar permisos y crear un usuario de auth para output.influxdb##
+##we choose the buckets id for register in one var and before created the Auth##
+
+
+- name: ID Bucket Auth V1 Unix
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i unix | awk '{print $1}'
+  register: id_bucket_unix
+
+
+- name: ID Bucket Auth V1 Wintel
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i wintel | awk '{print $1}'
+  register: id_bucket_wintel
+
+- name: ID Bucket Auth V1 kafka
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i kafka | awk '{print $1}'
+  register: id_bucket_kafka
+
+- name: ID Bucket Auth V1 Jolokia
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i jolokia | awk '{print $1}'
+  register: id_bucket_jolokia
+
+- name: ID Bucket Auth V1 VMware
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i vmware | awk '{print $1}'
+  register: id_bucket_vmware
+
+- name: ID Bucket Auth V1 Oracle
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i oracle | awk '{print $1}'
+  register: id_bucket_oracle
+
+- name: ID Bucket Auth V1 Core
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i core | awk '{print $1}'
+  register: id_bucket_core
+
+- name: ID Bucket Auth V1 ElasticSearch
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i elasticsearch | awk '{print $1}'
+  register: id_bucket_elasticsearch
+
+- name: ID Bucket Auth V1 Mysql
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i mysql | awk '{print $1}'
+  register: id_bucket_mysql
+
+- name: ID Bucket Auth V1 SQLServer
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i mqlserver | awk '{print $1}'
+  register: id_bucket_sqlserver
+
+- name: ID Bucket Auth V1 Apps Endpoints
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i apps_endpoints | awk '{print $1}'
+  register: id_bucket_apps_endpoints
+
+- name: ID Bucket Auth V1  Alerts
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i m360_alerts | awk '{print $1}'
+  register: id_bucket_alerts
+
+- name: ID Bucket Auth V1  Bouts
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i bouts | awk '{print $1}'
+  register: id_bucket_bouts
+
+- name: ID Bucket Auth V1 Networking
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i networking | awk '{print $1}'
+  register: id_bucket_networking
+
+- name: ID Bucket Auth V1 Influxdb
+  shell: influx bucket list --org {{ influxdb_primary_org }} --token {{ influxdb_admin_token }}| grep -i influxdb | awk '{print $1}' 
+  register: id_bucket_influxdb
+
+
+
+##extract --read-bucket and --write-bucket for register (line 359,355, etc)
+
+- name: Create Auth for InfluxQL V1
+  command: influx v1 auth create \
+    --username {{ influxdb_primary_username }} \
+    --password {{ influxdb_primary_password }} \
+    --org {{ influxdb_primary_org }} \
+    --token {{ influxdb_admin_token }} \
+    --read-bucket "{{ id_bucket_wintel.stdout }}" \
+    --read-bucket "{{ id_bucket_unix.stdout }}" \
+    --read-bucket "{{ id_bucket_influxdb.stdout }}" \
+    --read-bucket "{{ id_bucket_kafka.stdout }}" \
+    --read-bucket "{{ id_bucket_oracle.stdout }}" \
+    --read-bucket "{{ id_bucket_jolokia.stdout }}" \
+    --read-bucket "{{ id_bucket_vmware.stdout }}" \
+    --read-bucket "{{ id_bucket_core.stdout }}" \
+    --read-bucket "{{ id_bucket_elasticsearch.stdout }}" \
+    --read-bucket "{{ id_bucket_mysql.stdout }}" \
+    --read-bucket "{{ id_bucket_sqlserver.stdout }}" \
+    --read-bucket "{{ id_bucket_apps_endpoints.stdout }}" \
+    --read-bucket "{{ id_bucket_bouts.stdout }}" \
+    --read-bucket "{{ id_bucket_alerts.stdout }}" \
+    --read-bucket "{{ id_bucket_networking.stdout }}" \
+    --read-bucket "{{ id_bucket_influxdb.stdout }}" \
+    --write-bucket "{{ id_bucket_wintel.stdout }}" \
+    --write-bucket "{{ id_bucket_unix.stdout }}" \
+    --write-bucket "{{ id_bucket_kafka.stdout }}"  \
+    --write-bucket "{{ id_bucket_oracle.stdout }}"  \
+    --write-bucket "{{ id_bucket_jolokia.stdout }}" \
+    --write-bucket "{{ id_bucket_vmware.stdout }}" \
+    --write-bucket "{{ id_bucket_core.stdout }}" \
+    --write-bucket "{{ id_bucket_elasticsearch.stdout }}" \
+    --write-bucket "{{ id_bucket_mysql.stdout }}" \
+    --write-bucket "{{ id_bucket_sqlserver.stdout }}" \
+    --write-bucket "{{ id_bucket_apps_endpoints.stdout }}" \
+    --write-bucket "{{ id_bucket_bouts.stdout }}" \
+    --write-bucket "{{ id_bucket_alerts.stdout }}" \
+    --write-bucket "{{ id_bucket_networking.stdout }}" \
+    --write-bucket "{{ id_bucket_influxdb.stdout }}" 
+  register: _bucket
+  failed_when:
+    - _bucket.rc != 0
+    - '"already exists" not in _bucket.stderr'
+  changed_when: _bucket.rc == 0
+
