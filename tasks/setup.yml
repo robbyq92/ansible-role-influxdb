@@ -1,27 +1,56 @@
 ---
-- name: Install dependencies
-  apt:
-    name: "{{ influxdb_dependencies }}"
-    state: present
-    update_cache: true
+###I try to put "when" for detect if it ubuntu or Centos / RedHat
+#- name: Install dependencies
+#  apt:
+#    name: "{{ influxdb_dependencies }}"
+#    state: present
+#    update_cache: true
+#  when: ansible_distribution == "Ubuntu"
 
-- name: Add InfluxData's key
-  apt_key:
-    state: present
-    url: "{{ influxdb_signing_key }}"
+#- name: Install dependencies
+#  yum:
+#    name: "{{ influxdb_dependencies }}"
+#    state: present
+#    update_cache: true
+#  #when: ansible_distribution == "CentOS" and ansible_distribution_version => 7
+#  when: ansible_os_family == "RedHat" OR "CentOS"  and ansible_lsb.major_release|int >= 7 
 
-- name: Manage InfluxData APT repositories
-  apt_repository:
-    repo: "{{ item }}"
-    state: present
-  loop: "{{ influxdb_repositories }}"
+#- name: Add InfluxData's key
+#  apt_key:
+#    state: present
+#    url: "{{ influxdb_signing_key }}"
+#  when: ansible_distribution == "Ubuntu" and != "CentOS" OR "RedHat"
+
+#- name: Manage InfluxData APT repositories
+#  apt_repository:
+#    repo: "{{ item }}"
+#    state: present
+#  loop: "{{ influxdb_repositories }}"
+#  when: ansible_distribution == "Ubuntu" and != "CentOS" OR "RedHat"
+
+#- name: Ensure InfluxDB packages are installed
+#  apt:
+#    name: "{{ item }}"
+#    state: "{{ influxdb_package_state }}"
+#    update_cache: true
+#  loop: "{{ influxdb_packages }}"
+#  when: ansible_distribution == "Ubuntu"
 
 - name: Ensure InfluxDB packages are installed
-  apt:
+  yum:
     name: "{{ item }}"
     state: "{{ influxdb_package_state }}"
     update_cache: true
   loop: "{{ influxdb_packages }}"
+#  when: ansible_os_family == "RedHat" OR "CentOS"  and ansible_lsb.major_release|int >= 7
+
+- name: Ensure InfluxDB packages are installed
+  yum:
+    name: "{{ item }}"
+    state: "{{ influxdb_package_state }}"
+    update_cache: true
+  loop: "{{ influxdb_packages }}"
+#  when: ansible_os_family == "RedHat" OR "CentOS"  and ansible_lsb.major_release|int >= 7
 
 - name: Setup InfluxDB default file
   template:
@@ -31,6 +60,7 @@
     owner: root
     src: etc/default/influxdb2.j2
   notify: Restart InfluxDB
+ # when: ansible_distribution == "CentOS" OR "Ubuntu"
 
 - name: Ensure InfluxDB directories exist
   file:
@@ -43,6 +73,7 @@
     - "{{ influxdb_config_path }}"
     - "{{ influxdb_bolt_path | dirname }}"
     - "{{ influxdb_engine_path }}"
+  #when: ansible_distribution == "CentOS" OR "Ubuntu"
 
 - name: Remove any previous InfluxDB configuration file
   file:
@@ -52,6 +83,7 @@
     - config.json
     - config.toml
   notify: Restart InfluxDB
+  #when: ansible_distribution == "CentOS" OR "Ubuntu"
 
 - name: Setup InfluxDB configuration file
   template:
@@ -61,9 +93,12 @@
     owner: influxdb
     src: etc/influxdb/config.yml.j2
   notify: Restart InfluxDB
+  #when: ansible_distribution == "CentOS" OR "Ubuntu"
 
 - name: Ensure InfluxDB service is in the desired state
   service:
     enabled: "{{ influxdb_service_enabled }}"
     name: "{{ influxdb_service_name }}"
     state: "{{ influxdb_service_state }}"
+  #when: ansible_distribution == "CentOS" OR "Ubuntu"
+
