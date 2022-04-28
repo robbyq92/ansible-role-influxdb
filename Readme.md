@@ -1,3 +1,11 @@
+# New configure
+I configure and add auth v1 for influxdb v2 for compatibility influxdb v1 and created dbrp influxdb v1.
+
+```
+https://github.com/robbyq92/ansible-role-influxdb/blob/master/tasks/configure.yml
+```
+
+
 [![tests](https://github.com/boutetnico/ansible-role-influxdb/workflows/Test%20ansible%20role/badge.svg)](https://github.com/boutetnico/ansible-role-influxdb/actions?query=workflow%3A%22Test+ansible+role%22)
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-boutetnico.influxdb-blue.svg)](https://galaxy.ansible.com/boutetnico/influxdb)
 
