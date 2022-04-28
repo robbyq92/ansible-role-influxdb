@@ -10,6 +10,18 @@ I try to configure when, for detect S.O and install repositori for Centos/RedHat
 https://github.com/robbyq92/ansible-role-influxdb/blob/master/tasks/setup.yml
 ```
 
+If have problem with create buckets and mapped Influxdb v1 dbrp try learn this, need update influx cli to 2.2.1 to 2.3.0 or more.
+
+```
+update sudo dnf/yum update
+—> Package influxdb2-cli.x86_64 0:2.2.1-1 will be updated
+—> Package influxdb2-cli.x86_64 0:2.3.0-1 will be an update
+```
+
+```
+https://community.influxdata.com/t/issue-influxdb2-create-v1-auth/24712
+```
+
 [![tests](https://github.com/boutetnico/ansible-role-influxdb/workflows/Test%20ansible%20role/badge.svg)](https://github.com/boutetnico/ansible-role-influxdb/actions?query=workflow%3A%22Test+ansible+role%22)
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-boutetnico.influxdb-blue.svg)](https://galaxy.ansible.com/boutetnico/influxdb)
 
